@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گزارش بازدید آزمایشگاه‌ها</title>
+    <style>
+        * { box-sizing: border-box; font-family: Tahoma, Arial, sans-serif; }
+        body { margin: 0; background: #f0f2f5; padding: 30px; }
+        .container { max-width: 1300px; margin: auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 3px 12px rgba(0,0,0,.1); }
+        h2 { margin-top: 0; color: #333; text-align: center; }
+        .filter-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        label { display: block; margin-bottom: 6px; font-size: 13px; color: #444; }
+        input, select { width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .buttons { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        button, .download-btn { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        .filter-btn { background: #007bff; color: #fff; }
+        .download-btn { background: #17a2b8; color: #fff; }
+        .back-btn { background: #6c757d; color: #fff; }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: center; }
+        th { background: #007bff; color: #fff; }
+        tr:nth-child(even) { background: #f8f9fa; }
+        .empty { text-align: center; padding: 25px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>گزارش بازدید و ارزیابی آزمایشگاه‌ها</h2>
+
+        <form method="POST" action="{{ url_for('report_page') }}">
+            <div class="filter-form">
+                <div>
+                    <label for="laboratory_name">نام آزمایشگاه</label>
+                    <input type="text" id="laboratory_name" name="laboratory_name" value="{{ laboratory_name }}">
+                </div>
+                <div>
+                    <label for="industry">صنعت</label>
+                    <input type="text" id="industry" name="industry" value="{{ industry }}">
+                </div>
+                <div>
+                    <label for="first_issue_date">تاریخ اولین صدور گواهینامه</label>
+                    <input type="date" id="first_issue_date" name="first_issue_date" value="{{ first_issue_date }}">
+                </div>
+                <div>
+                    <label for="certificate_validity_date">تاریخ اعتبار گواهینامه</label>
+                    <input type="date" id="certificate_validity_date" name="certificate_validity_date" value="{{ certificate_validity_date }}">
+                </div>
+                <div>
+                    <label for="evaluation_date">تاریخ ارزیابی</label>
+                    <input type="date" id="evaluation_date" name="evaluation_date" value="{{ evaluation_date }}">
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="filter-btn">اعمال فیلتر</button>
+                <a href="{{ url_for('download_filtered_report',
+                            laboratory_name=laboratory_name,
+                            industry=industry,
+                            first_issue_date=first_issue_date,
+                            certificate_validity_date=certificate_validity_date,
+                            evaluation_date=evaluation_date) }}" class="download-btn">دانلود گزارش اکسل</a>
+                <a href="{{ url_for('admin_page') }}" class="back-btn">بازگشت</a>
+            </div>
+        </form>
+
+        {% if filtered_records %}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>شناسه</th>
+                            <th>نام آزمایشگاه</th>
+                            <th>صنعت</th>
+                            <th>شماره گواهینامه</th>
+                            <th>تاریخ اولین صدور</th>
+                            <th>تاریخ اعتبار گواهینامه</th>
+                            <th>نوع ارزیابی</th>
+                            <th>تاریخ ارزیابی</th>
+                            <th>اعضای تیم ارزیابی</th>
+                            <th>نتیجه ارزیابی</th>
+                            <th>تعداد عدم انطباق</th>
+                            <th>مهلت رفع عدم انطباق</th>
+                            <th>تاریخ ارزیابی پیگیری</th>
+                            <th>تاریخ ارسال پرونده</th>
+                            <th>تاریخ کمیته فنی</th>
+                            <th>نتیجه کمیته</th>
+                            <th>مدیر فنی</th>
+                            <th>ثبت‌کننده</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in filtered_records %}
+                            <tr>
+                                <td>{{ record[0] }}</td>
+                                <td>{{ record[1] }}</td>
+                                <td>{{ record[2] }}</td>
+                                <td>{{ record[3] }}</td>
+                                <td>{{ record[4] }}</td>
+                                <td>{{ record[5] }}</td>
+                                <td>{{ record[6] }}</td>
+                                <td>{{ record[7] }}</td>
+                                <td>{{ record[8] }}</td>
+                                <td>{{ record[9] }}</td>
+                                <td>{{ record[10] }}</td>
+                                <td>{{ record[11] }}</td>
+                                <td>{{ record[12] }}</td>
+                                <td>{{ record[13] }}</td>
+                                <td>{{ record[14] }}</td>
+                                <td>{{ record[15] }}</td>
+                                <td>{{ record[16] }}</td>
+                                <td>{{ record[17] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="empty">رکوردی برای نمایش وجود ندارد. فیلترها را وارد کرده و دکمه «اعمال فیلتر» را بزنید.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

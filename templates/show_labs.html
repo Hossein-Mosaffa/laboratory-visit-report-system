@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست آزمایشگاه‌ها</title>
+    <style>
+        * { box-sizing: border-box; font-family: Tahoma, Arial, sans-serif; }
+        body { margin: 0; background: #f0f2f5; padding: 30px; }
+        .container { max-width: 1100px; margin: auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 3px 12px rgba(0,0,0,.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h2 { margin: 0; color: #333; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: center; }
+        th { background: #007bff; color: #fff; }
+        tr:hover { background: #f8f9fa; }
+        .btn { padding: 7px 14px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 13px; display: inline-block; }
+        .add-btn { background: #28a745; color: #fff; }
+        .edit-btn { background: #ffc107; color: #212529; }
+        .back-btn { background: #6c757d; color: #fff; }
+        .empty { text-align: center; padding: 25px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>لیست آزمایشگاه‌ها</h2>
+            <a href="{{ url_for('laboratory_form') }}" class="btn add-btn">ثبت آزمایشگاه جدید</a>
+        </div>
+        {% if laboratories %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>شناسه</th>
+                        <th>نام آزمایشگاه</th>
+                        <th>صنعت</th>
+                        <th>شماره گواهینامه</th>
+                        <th>تاریخ اولین صدور</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for laboratory in laboratories %}
+                        <tr>
+                            <td>{{ laboratory[0] }}</td>
+                            <td>{{ laboratory[1] }}</td>
+                            <td>{{ laboratory[2] }}</td>
+                            <td>{{ laboratory[3] }}</td>
+                            <td>{{ laboratory[4] }}</td>
+                            <td>
+                                <a href="{{ url_for('edit_laboratory', laboratory_id=laboratory[0]) }}" class="btn edit-btn">ویرایش</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="empty">هیچ آزمایشگاهی ثبت نشده است.</p>
+        {% endif %}
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('admin_page') }}" class="btn back-btn">بازگشت به صفحه اصلی</a>
+        </div>
+    </div>
+</body>
+</html>

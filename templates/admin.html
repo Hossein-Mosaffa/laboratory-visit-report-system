@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحه مدیریت</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f0f2f5;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 9px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .add-btn {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .lab-btn {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .report-btn {
+            background: #17a2b8;
+            color: #fff;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #007bff;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+            color: #212529;
+            padding: 6px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h2>داشبورد مدیریت بازدید آزمایشگاه‌ها</h2>
+
+            <div class="buttons">
+                <a href="{{ url_for('record_form') }}" class="btn add-btn">ثبت رکورد جدید</a>
+                <a href="{{ url_for('laboratory_show') }}" class="btn lab-btn">لیست آزمایشگاه‌ها</a>
+                <a href="{{ url_for('report_page') }}" class="btn report-btn">گزارش‌ها</a>
+                <a href="{{ url_for('logout') }}" class="btn logout-btn">خروج</a>
+            </div>
+        </div>
+
+        {% if records %}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>شناسه رکورد</th>
+                            <th>نام آزمایشگاه</th>
+                            <th>صنعت</th>
+                            <th>شماره گواهینامه</th>
+                            <th>تاریخ اعتبار گواهینامه</th>
+                            <th>نوع ارزیابی</th>
+                            <th>تاریخ ارزیابی</th>
+                            <th>اعضای تیم ارزیابی</th>
+                            <th>نتیجه ارزیابی</th>
+                            <th>تعداد عدم انطباق</th>
+                            <th>مهلت رفع عدم انطباق</th>
+                            <th>تاریخ ارزیابی پیگیری</th>
+                            <th>تاریخ ارسال پرونده</th>
+                            <th>تاریخ کمیته فنی</th>
+                            <th>نتیجه کمیته</th>
+                            <th>مدیر فنی</th>
+                            <th>ثبت‌کننده</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td>{{ record[0] }}</td>
+                                <td>{{ record[1] }}</td>
+                                <td>{{ record[2] }}</td>
+                                <td>{{ record[3] }}</td>
+                                <td>{{ record[4] }}</td>
+                                <td>{{ record[5] }}</td>
+                                <td>{{ record[6] }}</td>
+                                <td>{{ record[7] }}</td>
+                                <td>{{ record[8] }}</td>
+                                <td>{{ record[9] }}</td>
+                                <td>{{ record[10] }}</td>
+                                <td>{{ record[11] }}</td>
+                                <td>{{ record[12] }}</td>
+                                <td>{{ record[13] }}</td>
+                                <td>{{ record[14] }}</td>
+                                <td>{{ record[15] }}</td>
+                                <td>{{ record[16] }}</td>
+                                <td>{{ record[17] }}</td>
+                                <td>
+                                    <a href="{{ url_for('edit_record', record_id=record[0]) }}"
+                                       class="edit-btn">
+                                        ویرایش
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="empty">هیچ رکوردی ثبت نشده است.</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ویرایش رکورد بازدید</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f0f2f5;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            line-height: 22px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>ویرایش رکورد بازدید و ارزیابی</h2>
+
+        <form method="POST" action="{{ url_for('edit_record', record_id=record[0]) }}">
+            <label for="laboratory_id">آزمایشگاه</label>
+            <select id="laboratory_id" name="laboratory_id" required>
+                <option value="">انتخاب کنید</option>
+
+                {% for laboratory in laboratories %}
+                    <option value="{{ laboratory[0] }}"
+                            {% if record[1]|string == laboratory[0]|string %}selected{% endif %}>
+                        {{ laboratory[1] }} - {{ laboratory[2] }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="certificate_validity_date">تاریخ اعتبار گواهینامه</label>
+            <input type="date" id="certificate_validity_date" name="certificate_validity_date"
+                   value="{{ record[6] }}" required>
+
+            <label for="evaluation_type">نوع ارزیابی</label>
+            <select id="evaluation_type" name="evaluation_type" required>
+                <option value="">انتخاب کنید</option>
+                <option value="اولیه" {% if record[7] == 'اولیه' %}selected{% endif %}>اولیه</option>
+                <option value="پایش" {% if record[7] == 'پایش' %}selected{% endif %}>پایش</option>
+                <option value="تجدید" {% if record[7] == 'تجدید' %}selected{% endif %}>تجدید</option>
+                <option value="پیگیری" {% if record[7] == 'پیگیری' %}selected{% endif %}>پیگیری</option>
+            </select>
+
+            <label for="evaluation_date">تاریخ ارزیابی</label>
+            <input type="date" id="evaluation_date" name="evaluation_date"
+                   value="{{ record[8] }}" required>
+
+            <label for="evaluation_team_members">اعضای تیم ارزیابی</label>
+            <textarea id="evaluation_team_members" name="evaluation_team_members" required>{{ record[9] }}</textarea>
+
+            <label for="evaluation_result">نتیجه ارزیابی</label>
+            <select id="evaluation_result" name="evaluation_result" required>
+                <option value="">انتخاب کنید</option>
+                <option value="قبول" {% if record[10] == 'قبول' %}selected{% endif %}>قبول</option>
+                <option value="قبول مشروط" {% if record[10] == 'قبول مشروط' %}selected{% endif %}>قبول مشروط</option>
+                <option value="عدم قبولی" {% if record[10] == 'عدم قبولی' %}selected{% endif %}>عدم قبولی</option>
+            </select>
+
+            <label for="non_conformance_count">تعداد موارد عدم انطباق</label>
+            <input type="number" id="non_conformance_count" name="non_conformance_count"
+                   min="0" value="{{ record[11] }}" required>
+
+            <label for="non_conformance_deadline">مهلت رفع عدم انطباق</label>
+            <input type="date" id="non_conformance_deadline" name="non_conformance_deadline"
+                   value="{{ record[12] }}">
+
+            <label for="follow_up_evaluation_date">تاریخ ارزیابی پیگیری</label>
+            <input type="date" id="follow_up_evaluation_date" name="follow_up_evaluation_date"
+                   value="{{ record[13] }}">
+
+            <label for="file_submission_date">تاریخ ارسال پرونده به کمیته</label>
+            <input type="date" id="file_submission_date" name="file_submission_date"
+                   value="{{ record[14] }}">
+
+            <label for="committee_meeting_date">تاریخ برگزاری کمیته فنی</label>
+            <input type="date" id="committee_meeting_date" name="committee_meeting_date"
+                   value="{{ record[15] }}">
+
+            <label for="committee_result">نتیجه کمیته</label>
+            <input type="text" id="committee_result" name="committee_result"
+                   value="{{ record[16] }}">
+
+            <label for="technical_manager">مدیر فنی</label>
+            <input type="text" id="technical_manager" name="technical_manager"
+                   value="{{ record[17] }}" required>
+
+            <label for="registrant">ثبت‌کننده</label>
+            <input type="text" id="registrant" name="registrant"
+                   value="{{ record[18] }}" required>
+
+            <div class="buttons">
+                <button type="submit" class="submit-btn">ذخیره تغییرات</button>
+                <a href="{{ url_for('admin_page') }}" class="back-btn">بازگشت</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

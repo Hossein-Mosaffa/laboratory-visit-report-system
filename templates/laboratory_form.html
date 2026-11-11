@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت آزمایشگاه</title>
+    <style>
+        * { box-sizing: border-box; font-family: Tahoma, Arial, sans-serif; }
+        body { margin: 0; background: #f0f2f5; padding: 30px; }
+        .container { max-width: 650px; margin: auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 3px 12px rgba(0,0,0,.1); }
+        h2 { margin-top: 0; color: #333; text-align: center; }
+        label { display: block; margin: 15px 0 7px; font-size: 14px; color: #444; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .buttons { margin-top: 25px; display: flex; gap: 10px; }
+        button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .submit-btn { background: #28a745; color: #fff; }
+        .back-btn { background: #6c757d; color: #fff; text-decoration: none; display: inline-block; line-height: 22px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ثبت آزمایشگاه جدید</h2>
+        <form method="POST" action="{{ url_for('submit_laboratory_form') }}">
+            <label for="laboratory_name">نام آزمایشگاه</label>
+            <input type="text" id="laboratory_name" name="laboratory_name" required>
+            <label for="industry">صنعت</label>
+            <input type="text" id="industry" name="industry" required>
+            <label for="certificate_number">شماره گواهینامه</label>
+            <input type="text" id="certificate_number" name="certificate_number" required>
+            <label for="first_issue_date">تاریخ اولین صدور گواهینامه</label>
+            <input type="date" id="first_issue_date" name="first_issue_date" required>
+            <div class="buttons">
+                <button type="submit" class="submit-btn">ثبت آزمایشگاه</button>
+                <a href="{{ url_for('laboratory_show') }}" class="back-btn">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
